@@ -16,13 +16,18 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .  
 @prefix vann: <http://purl.org/vocab/vann/> .
 @prefix voaf: <http://purl.org/vocommons/voaf#> .
 @prefix vs: <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
 @prefix cc: <http://creativecommons.org/ns#>.
 @prefix foaf: <http://xmlns.com/foaf/0.1/>.
-@prefix qudt: <http://data.qudt.org/qudt/owl/1.0.0/qudt.owl#> .
+@prefix ssn: <https://www.w3.org/ns/ssn/>.
+@prefix cc: <http://creativecommons.org/ns#>.
+@prefix dul: <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#>.
+@prefix liner: <https://w3id.org/liner/>.
+@prefix qb: <http://purl.org/linked-data/cube#>.
+@prefix qudt: <http://qudt.org/1.1/schema/qudt#>.
 
 @prefix seas: <https://w3id.org/seas/>.
 @base <https://w3id.org/seas/>.
@@ -43,24 +48,33 @@ foaf:name a owl:DatatypeProperty .
 
 
 
-
-#Core roles and activities (for devices and systems), this is related to actor module and could specialize it but now here defined as new vocabulary
-seas:BuildingEnergyOntology a owl:Ontology , voaf:Vocabulary ;
-  dcterms:title "SEAS-BuildingEnergyOntology ontology"@en ;
-  dcterms:description "The Seas Building specific energy related properties with quantities and units for the ITEA SEAS (Smart Energy Aware Systems) project."@en ;
-  dcterms:issued "2016-01-26"^^xsd:date ;
-  dcterms:modified "2016-05-26"^^xsd:date ;
-  dcterms:creator <http://www.vtt.fi/JarmoKalaoja> ;
+seas:BatteryOntology a owl:Ontology , voaf:Vocabulary ;
+  dcterms:title "The SEAS Battery ontology."@en ;
+  dcterms:description """This ontology defines batteries and their state of charge ratio property"""@en ;
+  dcterms:issued "2016-10-30"^^xsd:date ;
+  dcterms:modified "2016-11-03"^^xsd:date ;
+  dcterms:creator <http://www.maxime-lefrancois.info/me#> ;
   cc:license <https://www.apache.org/licenses/LICENSE-2.0> ;
   vann:preferredNamespacePrefix "seas" ;
   vann:preferredNamespaceUri <https://w3id.org/seas/> ;  
-  owl:versionIRI <https://w3id.org/seas/BuildingEnergyOntology-0.9> ;
-  owl:versionInfo "v0.9" .
-  
-seas:UValue a owl:Class; 
-  rdfs:label "Transmittance"@en;
-  rdfs:label "UValue"@en ;
-  rdfs:comment "Also known as Thermal Transmittance. The overall heat transfer coefficient U is a measure of the overall ability of a series of conductive and convective barriers to transfer heat."@en ;
-  rdfs:subClassOf qudt:CoefficientOfHeatTransfer, seas:Quantity; 
+  owl:imports seas:ElectricPowerSystemOntology ;
+  owl:versionIRI <https://w3id.org/seas/BatteryOntology-1.0> ;
+  owl:versionInfo "v1.0" .
+
+seas:Battery a owl:Class;
+  rdfs:label "Battery" ;
+  rdfs:comment """The class of batteries, which are electric power storage systems."""@en ;
+  rdfs:subClassOf seas:ElectricPowerStorageSystem ;
   vs:term_status "testing" ;
-  rdfs:isDefinedBy seas:BuildingEnergyOntology.      
+  rdfs:isDefinedBy seas:BatteryOntology .
+
+seas:stateOfChargeRatio a owl:ObjectProperty, owl:FunctionalProperty ;
+  rdfs:label "state of charge ratio"@en ;
+  rdfs:comment """The state of charge of a battery, quantified by unitless values."""@en ;
+  rdfs:domain seas:Battery ;
+  rdfs:subPropertyOf seas:hasProperty ;
+  rdfs:range seas:PercentageProperty ;
+  vs:term_status "testing" ;
+  rdfs:isDefinedBy seas:BatteryOntology .
+
+
